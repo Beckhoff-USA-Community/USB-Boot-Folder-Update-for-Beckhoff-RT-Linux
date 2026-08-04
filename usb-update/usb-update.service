@@ -1,0 +1,16 @@
+[Unit]
+Description=USB stick TwinCAT boot folder update check
+# sway/TF1200 come up via getty autologin on tty1 (no dedicated unit exists);
+# prompt.sh additionally polls for the Wayland socket itself.
+After=local-fs.target getty@tty1.service
+# TcHmiSrv is After=TcSystemServiceUm, so Before=TcSystemServiceUm already
+# covers it transitively; the explicit Before= keeps that true even if the
+# TwinCAT unit is absent/disabled (systemd ignores ordering on missing units).
+Before=TcSystemServiceUm.service TcHmiSrv.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/lib/usb-update/usb-update-run.sh
+
+[Install]
+WantedBy=multi-user.target

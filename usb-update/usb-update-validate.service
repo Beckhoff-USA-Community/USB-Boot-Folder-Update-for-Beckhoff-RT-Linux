@@ -1,0 +1,11 @@
+[Unit]
+Description=USB update post-boot validation (TwinCAT RUN + HMI check)
+After=TcSystemServiceUm.service TcHmiSrv.service
+Wants=TcSystemServiceUm.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/lib/usb-update/validate.sh
+
+[Install]
+WantedBy=multi-user.target
