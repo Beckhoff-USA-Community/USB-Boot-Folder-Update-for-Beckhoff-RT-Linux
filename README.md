@@ -30,7 +30,7 @@ start, so nothing ever has to be stopped:
 2. Valid package → an **Update / Skip** dialog on the HMI. It times out to
    Skip, so an unattended power cycle can never hang the machine.
 3. On **Update**: the current state is backed up, the new files are staged
-   and verified, then swapped in atomically. Device state — event logs and
+   and verified, then swapped in automatically. Device state — event logs and
    PLC persistent data — is always carried over from the machine, never taken
    from the stick.
 4. After TwinCAT starts, a second service checks that it reached RUN (and, on
