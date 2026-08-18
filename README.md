@@ -32,8 +32,8 @@ boot is a no-op, and an unanswered dialog times out to Skip.
 On the device, as `Administrator`:
 
 ```bash
-curl -fLO https://github.com/Beckhoff-USA-Community/USB-Boot-Folder-Update-for-Beckhoff-RT-Linux/releases/latest/download/usb-update.deb
-sudo apt install ./usb-update.deb
+curl -fL -o /tmp/usb-update.deb https://github.com/Beckhoff-USA-Community/USB-Boot-Folder-Update-for-Beckhoff-RT-Linux/releases/latest/download/usb-update.deb
+sudo dpkg -i /tmp/usb-update.deb
 ```
 
 (To pin a specific version instead, download its `.deb` from the
