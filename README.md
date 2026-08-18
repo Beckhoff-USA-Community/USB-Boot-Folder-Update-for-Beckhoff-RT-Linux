@@ -24,7 +24,6 @@ boot is a no-op, and an unanswered dialog times out to Skip.
   [Installing the TF1200 UI Client](https://infosys.beckhoff.com/content/1033/tf1200_tc3_ui_client/20659736843.html?id=7323260229858072202)
   — `sudo ./setup-full.sh --user=<USER> --autologin --autostart` is the
   expected setup.
-- `tcadstool` (from the `adstool` package).
 
 ## Installation
 
