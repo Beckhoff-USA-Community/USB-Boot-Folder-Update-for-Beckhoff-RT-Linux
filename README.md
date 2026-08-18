@@ -10,28 +10,19 @@ service checks that TwinCAT reached RUN (offering an on-screen revert if it
 didn't). A stick left in the port is harmless — once installed, every later
 boot is a no-op, and an unanswered dialog times out to Skip.
 
-> **Not an official Beckhoff tool.** Built and tested on one bench setup
-> (see [Tested with](#tested-with)). It uses only stock components, but
-> review and test it on your own image before trusting a production machine
-> to it.
-
-## Tested with
-
-Versions this release was tested against (each GitHub release lists its own):
-
-| Component                        | Version                                 |
-| -------------------------------- | --------------------------------------- |
-| Beckhoff RT Linux                | Debian 13 (trixie), TCLUR 13.0.371073-1 |
-| TwinCAT runtime (`tc31-xar-um`)  | 4026.27.8                               |
-| TF1200 UI Client                 | 1.13.1                                  |
-| `adstool` (tcadstool)            | 113.0.35                                |
-| Hardware                         | CX9240                                  |
+> **Not an official Beckhoff tool.** Built and tested on one bench setup —
+> each [release](https://github.com/Beckhoff-USA-Community/USB-Boot-Folder-Update-for-Beckhoff-RT-Linux/releases)
+> lists the versions it was tested against. It uses only stock components,
+> but review and test it on your own image before trusting a production
+> machine to it.
 
 ## Requirements
 
 - Beckhoff RT Linux with the TwinCAT usermode runtime (`TcSystemServiceUm`).
-- A TF1200 UI Client / sway session for the on-screen dialog (without one,
-  prompts safely time out to Skip).
+- The TF1200 UI Client, installed per
+  [Installing the TF1200 UI Client](https://infosys.beckhoff.com/content/1033/tf1200_tc3_ui_client/20659736843.html?id=7323260229858072202)
+  — `sudo ./setup-full.sh --user=<USER> --autologin --autostart` is the
+  expected setup.
 - `tcadstool` (from the `adstool` package).
 
 ## Installation
