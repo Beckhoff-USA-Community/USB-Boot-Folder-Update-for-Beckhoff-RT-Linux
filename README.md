@@ -29,13 +29,16 @@ boot is a no-op, and an unanswered dialog times out to Skip.
 
 ## Installation
 
-Download the `.deb` from the
-[Releases](https://github.com/Beckhoff-USA-Community/USB-Boot-Folder-Update-for-Beckhoff-RT-Linux/releases)
-page, copy it to the device, and install it as `Administrator`:
+On the device, as `Administrator`:
 
 ```bash
-sudo apt install ./usb-update_1.0.0_all.deb
+curl -fLO https://github.com/Beckhoff-USA-Community/USB-Boot-Folder-Update-for-Beckhoff-RT-Linux/releases/latest/download/usb-update.deb
+sudo apt install ./usb-update.deb
 ```
+
+(To pin a specific version instead, download its `.deb` from the
+[Releases](https://github.com/Beckhoff-USA-Community/USB-Boot-Folder-Update-for-Beckhoff-RT-Linux/releases)
+page.)
 
 Before the first real update, review the configuration — every tunable is
 documented in the file itself, and the **Before production** notes there
@@ -45,8 +48,8 @@ documented in the file itself, and the **Before production** notes there
 sudo nano /etc/usb-update/usb-update.conf
 ```
 
-Updating the tool = installing a newer `.deb` the same way (your edited
-config is preserved). Uninstalling = `sudo apt remove usb-update` (add
+Updating the tool = re-running the same two commands once a newer release is
+out (your edited config is preserved). Uninstalling = `sudo apt remove usb-update` (add
 `purge` instead of `remove` to also delete backups and config).
 
 ## Preparing an update stick

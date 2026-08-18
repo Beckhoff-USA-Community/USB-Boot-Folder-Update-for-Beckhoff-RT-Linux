@@ -5,7 +5,9 @@
 #   ./build-deb.sh            # version from the VERSION file
 #   ./build-deb.sh 1.2.3      # explicit version override
 #
-# Output: dist/usb-update_<version>_all.deb
+# Output: dist/usb-update_<version>_all.deb, plus a dist/usb-update.deb copy —
+# upload BOTH to each GitHub release so the README's
+# releases/latest/download/usb-update.deb URL keeps working.
 set -eu
 repo="$(cd "$(dirname "$0")" && pwd)"
 ver="${1:-$(tr -d '[:space:]' < "$repo/VERSION")}"
@@ -43,3 +45,4 @@ install -m 0755 "$repo"/deb/{postinst,prerm,postrm} "$stage/DEBIAN/"
 
 mkdir -p "$repo/dist"
 dpkg-deb --build --root-owner-group "$stage" "$repo/dist/usb-update_${ver}_all.deb"
+cp -f "$repo/dist/usb-update_${ver}_all.deb" "$repo/dist/usb-update.deb"
