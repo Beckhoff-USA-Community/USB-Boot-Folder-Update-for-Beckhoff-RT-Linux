@@ -15,6 +15,7 @@ deb/*     text eol=lf
 
 # Anything binary that may land here later
 *.png     binary
+*.gif     binary
 *.db      binary
 *.tszip   binary
 *.tizip   binary

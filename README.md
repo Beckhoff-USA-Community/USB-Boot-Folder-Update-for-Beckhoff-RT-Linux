@@ -10,6 +10,8 @@ service checks that TwinCAT reached RUN (offering an on-screen revert if it
 didn't). A stick left in the port is harmless — once installed, every later
 boot is a no-op, and an unanswered dialog times out to Skip.
 
+![Demo: insert a stick, power-cycle, tap Update](docs/usb-update-demo.gif)
+
 > **Not an official Beckhoff tool.** Built and tested on one bench setup —
 > each [release](https://github.com/Beckhoff-USA-Community/USB-Boot-Folder-Update-for-Beckhoff-RT-Linux/releases)
 > lists the versions it was tested against. It uses only stock components,
