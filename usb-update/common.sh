@@ -2,7 +2,14 @@
 # Shared helpers for usb-update scripts. Source this, don't execute it.
 
 USB_UPDATE_LIB="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-. "$USB_UPDATE_LIB/usb-update.conf"
+# The installed config lives in /etc (a dpkg conffile, preserved across package
+# upgrades); the copy next to the scripts is the fallback for ad-hoc runs
+# straight from a checkout.
+if [ -f /etc/usb-update/usb-update.conf ]; then
+    . /etc/usb-update/usb-update.conf
+else
+    . "$USB_UPDATE_LIB/usb-update.conf"
+fi
 
 # Fixed paths/accounts, identical on all supported devices — deliberately
 # constants here, not settings in usb-update.conf.

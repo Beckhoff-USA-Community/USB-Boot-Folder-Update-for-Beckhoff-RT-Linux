@@ -5,7 +5,7 @@ Wants=TcSystemServiceUm.service
 
 [Service]
 Type=oneshot
-ExecStart=/usr/local/lib/usb-update/validate.sh
+ExecStart=/usr/lib/usb-update/validate.sh
 
 [Install]
 WantedBy=multi-user.target

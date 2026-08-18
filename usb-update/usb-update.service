@@ -10,7 +10,7 @@ Before=TcSystemServiceUm.service TcHmiSrv.service
 
 [Service]
 Type=oneshot
-ExecStart=/usr/local/lib/usb-update/usb-update-run.sh
+ExecStart=/usr/lib/usb-update/usb-update-run.sh
 
 [Install]
 WantedBy=multi-user.target

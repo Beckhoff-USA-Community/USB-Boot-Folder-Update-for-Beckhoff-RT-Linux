@@ -1,0 +1,18 @@
+Package: usb-update
+Version: __VERSION__
+Section: admin
+Priority: optional
+Architecture: all
+Depends: bash, curl
+Recommends: adstool
+Maintainer: Beckhoff USA Community
+Homepage: https://github.com/Beckhoff-USA-Community/USB-Boot-Folder-Update-for-Beckhoff-RT-Linux
+Description: USB boot-folder update for Beckhoff RT Linux
+ Updates the TwinCAT application boot folder and/or a published TwinCAT
+ HMI (TF2000) project on a Beckhoff RT Linux device from a USB stick at
+ boot, with operator confirmation on the HMI, automatic backup,
+ post-boot validation and an on-screen revert on failure.
+ .
+ Intended for the Beckhoff RT Linux image (TwinCAT usermode runtime,
+ sway/TF1200 UI Client, tcadstool from the Beckhoff apt repository).
+ Not an official Beckhoff tool.

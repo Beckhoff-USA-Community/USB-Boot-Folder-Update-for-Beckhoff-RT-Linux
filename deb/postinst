@@ -1,0 +1,24 @@
+#!/bin/sh
+set -e
+
+case "$1" in
+    configure)
+        if [ -d /run/systemd/system ]; then
+            systemctl daemon-reload
+            # Enable on fresh install only ($2 = previously configured
+            # version, empty on first install): an upgrade must not undo an
+            # administrator's deliberate `systemctl disable`.
+            if [ -z "${2:-}" ]; then
+                systemctl enable usb-update.service usb-update-validate.service
+            fi
+        fi
+        # Route the sway exec line that launches the TF1200 UI Client through
+        # ui-gate.sh (idempotent; warns but succeeds on machines without such
+        # a line). Deliberately no `systemctl start`: both units are boot-time
+        # oneshots — starting one mid-session would pop the operator dialog
+        # over a running HMI. They take effect on the next boot.
+        /usr/lib/usb-update/sway-gate.sh gate
+        ;;
+esac
+
+exit 0

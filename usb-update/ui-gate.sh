@@ -1,6 +1,6 @@
 #!/bin/bash
 # Hold the HMI browser (TF1200 UI Client) back until the boot-time update
-# check has finished asking the operator. install.sh rewrites the sway exec
+# check has finished asking the operator. sway-gate.sh rewrites the sway exec
 # line that starts the client to go through this script; the original command
 # line is exec'd unchanged once the gate opens, so with no stick present the
 # only visible effect is the client appearing a few seconds later.

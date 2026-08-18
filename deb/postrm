@@ -1,0 +1,31 @@
+#!/bin/sh
+set -e
+
+conf=/etc/usb-update/usb-update.conf
+
+# Pull a value out of the config with sed instead of sourcing it (bash array
+# inside, and on purge the conffile is already gone - defaults apply then).
+conf_val() {
+    v=$(sed -n "s/^$1=//p" "$conf" 2>/dev/null | tail -n 1)
+    if [ -n "$v" ]; then printf '%s\n' "$v"; else printf '%s\n' "$2"; fi
+}
+
+case "$1" in
+    remove|purge)
+        mount_point=$(conf_val MOUNT_POINT /run/usb-update/mnt)
+        if mountpoint -q "$mount_point" 2>/dev/null; then
+            umount "$mount_point" || echo "WARNING: failed to unmount $mount_point" >&2
+        fi
+        rm -rf /run/usb-update
+        if [ -d /run/systemd/system ]; then
+            systemctl daemon-reload || true
+        fi
+        if [ "$1" = purge ]; then
+            state_dir=$(conf_val STATE_DIR /var/lib/usb-update)
+            rm -rf "$state_dir" /etc/usb-update
+            echo "Removed $state_dir (backups and installed-id) and /etc/usb-update."
+        fi
+        ;;
+esac
+
+exit 0

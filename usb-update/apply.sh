@@ -6,6 +6,9 @@
 # untouched. Boot.old / service.old are kept as instant-rollback sources until
 # validate.sh confirms the new state is healthy.
 #
+# This automates what Beckhoff Infosys documents as manual procedures — see
+# "Further reading" in the top-level README for the links.
+#
 # Usage: apply.sh <package-root> [package-id]
 set -eu
 . "$(dirname "$0")/common.sh"

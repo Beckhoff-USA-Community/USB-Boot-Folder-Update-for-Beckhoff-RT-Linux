@@ -10,6 +10,8 @@
 *.conf    text eol=lf
 *.service text eol=lf
 *.md      text eol=lf
+# dpkg metadata and maintainer scripts (extensionless)
+deb/*     text eol=lf
 
 # Anything binary that may land here later
 *.png     binary

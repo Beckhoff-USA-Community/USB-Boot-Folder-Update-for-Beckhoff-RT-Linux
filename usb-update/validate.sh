@@ -20,6 +20,12 @@
 # validated too); otherwise a "contact service" notice is shown and the failed
 # state is left for a technician. The marker is kept on failure, so every boot
 # in a failed state re-offers the choice.
+#
+# Manual rollback from a shell (what the on-screen revert automates for the
+# Boot half; the failed state is kept at .failed for diagnosis):
+#   sudo mv /etc/TwinCAT/3.1/Boot /etc/TwinCAT/3.1/Boot.failed
+#   sudo mv /etc/TwinCAT/3.1/Boot.old /etc/TwinCAT/3.1/Boot
+#   sudo reboot
 set -u
 . "$(dirname "$0")/common.sh"
 

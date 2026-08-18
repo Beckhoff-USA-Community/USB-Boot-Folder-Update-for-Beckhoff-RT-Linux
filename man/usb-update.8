@@ -1,0 +1,70 @@
+.TH USB-UPDATE 8 "2026-08-18" "usb-update __VERSION__" "System Administration"
+.SH NAME
+usb-update \- update the TwinCAT boot folder and TwinCAT HMI project on a
+Beckhoff RT Linux device from a USB stick at boot
+.SH DESCRIPTION
+.B usb-update
+runs at every boot, before the TwinCAT runtime and the TwinCAT HMI (TF2000)
+server start.
+If a USB stick with the configured volume label (default
+.BR UPDATE )
+carries a package that is not already installed, an
+.B Update / Skip
+dialog is shown on the HMI; the HMI browser is held back until the operator
+answers.
+An unanswered dialog times out to Skip, so an unattended power cycle never
+hangs the machine.
+.PP
+On
+.BR Update ,
+the current state is backed up, the new files are staged and verified, then
+swapped in.
+Device state (event logs, PLC persistent data) is carried over from the
+machine, never taken from the stick.
+After TwinCAT starts, a second service validates that it reached RUN (and,
+on HMI machines, that the HMI server answers).
+On success the rollback copy is removed; on failure the operator is offered
+a revert to the previous working version.
+.PP
+A stick whose package is already installed is ignored, so a stick left in
+the port is harmless.
+An empty file named
+.B RESTORE
+at the root of a labeled stick offers restoring the last backup instead.
+.SH OPERATION
+Insert the prepared stick, power-cycle the machine, answer the dialog,
+remove the stick.
+The stick layout and preparation steps are described in the README (see
+.BR "SEE ALSO" ).
+.SH FILES
+.TP
+.I /etc/usb-update/usb-update.conf
+Configuration; every tunable is documented in the file.
+Preserved across package upgrades.
+.TP
+.I /usr/lib/usb-update/
+The scripts, each self-documented, orchestrated by
+.B usb-update.service
+(boot-time check and apply) and
+.B usb-update-validate.service
+(post-boot validation).
+.TP
+.I /var/lib/usb-update/
+State: backups and the installed-package id.
+Kept on package removal, deleted on purge.
+.SH LOGGING
+Everything logs to the persistent journal under one tag:
+.PP
+.nf
+    journalctl -t usb-update -b
+.fi
+.PP
+.B validate: SUCCESS
+is the happy ending;
+.B validate: FAILURE
+includes TwinCAT's own error lines.
+.SH SEE ALSO
+Full documentation and releases:
+.I https://github.com/Beckhoff-USA-Community/USB-Boot-Folder-Update-for-Beckhoff-RT-Linux
+.PP
+Not an official Beckhoff tool.
