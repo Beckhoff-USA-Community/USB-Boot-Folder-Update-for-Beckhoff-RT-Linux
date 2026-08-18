@@ -18,7 +18,8 @@ boot is a no-op, and an unanswered dialog times out to Skip.
 
 ## Requirements
 
-- Beckhoff RT Linux with the TwinCAT usermode runtime (`TcSystemServiceUm`).
+- Beckhoff RT Linux with the TwinCAT runtime, installed per
+  [Installing TwinCAT 3 runtime](https://infosys.beckhoff.com/content/1033/beckhoff_rt_linux/17350412299.html?id=7176322633100356666).
 - The TF1200 UI Client, installed per
   [Installing the TF1200 UI Client](https://infosys.beckhoff.com/content/1033/tf1200_tc3_ui_client/20659736843.html?id=7323260229858072202)
   — `sudo ./setup-full.sh --user=<USER> --autologin --autostart` is the
