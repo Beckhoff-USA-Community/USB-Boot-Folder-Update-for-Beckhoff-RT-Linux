@@ -15,6 +15,11 @@ BOOT_DIR=/etc/TwinCAT/3.1/Boot
 HMI_DIR=/var/lib/tchmisrv
 HMI_USER=tchmisrv
 HMI_INSTALL_CHECK=/etc/TwinCAT/Functions/TF2000-HMI-Server/TcHmiSrv
+# Marker that opens the HMI-browser gate: ui-gate.sh (run by sway in place of
+# the TF1200 UI Client) holds the client back until this file exists, so the
+# boot dialogs get the screen to themselves. Lives on the /run tmpfs, i.e. it
+# is gone on every boot until usb-update-run.sh recreates it.
+UI_RELEASE_FILE=/run/usb-update/ui-release
 
 # log [-p <priority>] <message>...
 # Default priority is notice; failure paths use log_err/log_warn so that
@@ -133,6 +138,13 @@ target_matches() {
         "$want"*) return 0 ;;
         *)        return 1 ;;
     esac
+}
+
+# Open the HMI-browser gate (see UI_RELEASE_FILE above). Safe to call more
+# than once; never fails the caller.
+release_ui() {
+    mkdir -p "$(dirname "$UI_RELEASE_FILE")"
+    touch "$UI_RELEASE_FILE" 2>/dev/null || true
 }
 
 usb_mounted() {

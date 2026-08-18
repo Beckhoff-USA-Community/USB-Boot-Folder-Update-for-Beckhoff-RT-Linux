@@ -8,6 +8,13 @@ lib="$(cd "$(dirname "$0")" && pwd)"
 
 mkdir -p "$STATE_DIR" /run/usb-update
 
+# The HMI browser is held back by ui-gate.sh until we open its gate. The trap
+# covers every exit path (no stick, refused package, failure, reboot), so a
+# problem here can never leave the operator with a black screen; the explicit
+# release_ui calls further down open the gate the moment a selection is made,
+# without waiting for the copy work behind it to finish.
+trap release_ui EXIT
+
 reason=$("$lib/detect.sh")
 rc=$?
 
@@ -26,6 +33,7 @@ case $rc in
             exit 0
         fi
         choice=$("$lib/prompt.sh" "Restore previous application?" "Restore")
+        release_ui
         if [ "$choice" = "yes" ]; then
             if "$lib/restore.sh"; then
                 log "run: restore applied"
@@ -68,6 +76,7 @@ else
 fi
 
 choice=$("$lib/prompt.sh" "$msg" "Update")
+release_ui
 if [ "$choice" != "yes" ]; then
     log "run: operator skipped the update"
     usb_unmount

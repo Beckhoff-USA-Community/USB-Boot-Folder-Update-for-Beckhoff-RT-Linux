@@ -42,6 +42,16 @@ systemctl disable usb-update.service usb-update-validate.service 2>/dev/null || 
 rm -f /etc/systemd/system/usb-update.service /etc/systemd/system/usb-update-validate.service
 systemctl daemon-reload
 
+# Un-gate the TF1200 UI Client launch BEFORE removing $dest: a sway config
+# exec'ing a deleted ui-gate.sh would leave the machine with no HMI at all.
+for cfg in /home/*/.config/sway/config /etc/sway/config /etc/sway/config.d/*; do
+    [ -f "$cfg" ] || continue
+    if grep -q "$dest/ui-gate.sh" "$cfg"; then
+        sed -i "s|$dest/ui-gate.sh ||g" "$cfg"
+        echo "restored direct TF1200 UI Client launch in $cfg"
+    fi
+done
+
 if mountpoint -q "$mount_point" 2>/dev/null; then
     umount "$mount_point" || echo "WARNING: failed to unmount $mount_point" >&2
 fi

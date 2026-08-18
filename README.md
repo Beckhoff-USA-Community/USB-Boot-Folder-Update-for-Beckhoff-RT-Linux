@@ -12,6 +12,13 @@ the HMI project, or both.
 > should run on any Beckhoff RT Linux image — but review and test it on your
 > own image before trusting a production machine to it.
 
+> **Scope.** This tool is for installations where TwinCAT runs directly on
+> the host OS — it updates the boot folder and HMI files in place on the
+> device. It is not intended for containerized deployments: if your
+> application runs in containers, distributing new container images is
+> arguably the cleaner way to deliver updates, and that approach is out of
+> scope here (a separate repo demonstrating it may follow).
+
 ## Quick start
 
 1. Install the tool once on the device ([Installation](#installation)).
@@ -27,8 +34,11 @@ start, so nothing ever has to be stopped:
 
 1. A systemd service looks for a USB stick with the configured label. No
    stick, or its package already installed → normal boot.
-2. Valid package → an **Update / Skip** dialog on the HMI. It times out to
-   Skip, so an unattended power cycle can never hang the machine.
+2. Valid package → an **Update / Skip** dialog on the HMI. The HMI browser
+   (TF1200 UI Client) is held back until the operator answers, so the dialog
+   gets the screen to itself — the browser starts the moment a selection is
+   made. The dialog times out to Skip, so an unattended power cycle can never
+   hang the machine (the browser then starts too).
 3. On **Update**: the current state is backed up, the new files are staged
    and verified, then swapped in automatically. Device state — event logs and
    PLC persistent data — is always carried over from the machine, never taken
@@ -47,6 +57,8 @@ later boot is a no-op.
 - A TF1200 UI Client / sway session for the on-screen dialog. Without one the
   tool still boots safely — prompts just time out to Skip.
 - `tcadstool` (from the `adstool` package).
+- `git`, to clone this repo on the device — not on the image by default
+  (installation covered in [Installation](#installation)).
 
 ## Installation
 
@@ -67,9 +79,12 @@ sudo bash USB-Boot-Folder-Update-for-Beckhoff-RT-Linux/usb-update/install.sh
 ```
 
 This installs everything to `/usr/local/lib/usb-update/` and enables the two
-systemd units. An already-edited `usb-update.conf` is preserved on reinstall,
-so updating the tool later is just `git pull` in the clone and rerunning the
-installer.
+systemd units. It also rewrites the sway `exec` line that launches the TF1200
+UI Client to go through `ui-gate.sh`, which holds the browser back until the
+boot-time update check has finished asking the operator (the uninstaller
+restores the original line). An already-edited `usb-update.conf` is preserved
+on reinstall, so updating the tool later is just `git pull` in the clone and
+rerunning the installer.
 
 Before the first real update, review the configuration:
 
@@ -176,6 +191,12 @@ sudo journalctl -t usb-update -b
 If the dialog never appears, check that the sway session is up — a Wayland
 socket should exist under `/run/user/*/`. The prompt auto-detects the UI
 session from that socket and gives up safely (Skip) after 30 s.
+
+If the HMI browser seems to start late, that is the gate: `ui-gate.sh` holds
+the TF1200 UI Client until the update check has released it (a few seconds on
+a boot with no stick). Should the release never come, the client starts
+anyway after `UI_GATE_TIMEOUT` — the journal line `ui-gate: not released`
+tells you the update service never got that far.
 
 ## Configuration
 
